@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")         instead of spring security
 
 @RestController
 @RequestMapping("/login")
@@ -35,4 +35,5 @@ public class LoginController {
         responseData.setData(loginServiceImp.addUser(signUpRequest));
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
+
 }

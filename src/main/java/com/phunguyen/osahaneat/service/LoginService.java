@@ -19,22 +19,6 @@ public class LoginService implements LoginServiceImp {
     UserRepository userRepository;
 
     @Override
-    public List<UserDTO> getAllUser() {
-        List<Users> listUser = userRepository.findAll();
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (Users user : listUser) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setUserName(user.getUserName());
-            userDTO.setPassword(user.getPassword());
-            userDTO.setFullName(user.getFullName());
-            userDTO.setCreatedDate(user.getCreatedDate());
-            userDTOList.add(userDTO);
-        }
-        return userDTOList;
-    }
-
-    @Override
     public boolean checkLogin(String username, String password){
 
         List<Users> listUser = userRepository.findByUserNameAndPassword(username, password);

@@ -7,6 +7,7 @@ import com.phunguyen.osahaneat.payload.request.SignUpRequest;
 import com.phunguyen.osahaneat.repository.UserRepository;
 import com.phunguyen.osahaneat.service.imp.LoginServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ public class LoginService implements LoginServiceImp {
     //            @Qualifier("tên bean") - trường hợp có nhiều class cùng tên trên container
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public boolean checkLogin(String username, String password){
-
-        List<Users> listUser = userRepository.findByUserNameAndPassword(username, password);
-        return listUser.size() > 0;
+        Users user = userRepository.findByUserName(username);
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     @Override

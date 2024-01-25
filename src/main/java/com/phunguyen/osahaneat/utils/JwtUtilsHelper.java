@@ -17,4 +17,16 @@ public class JwtUtilsHelper {
         String jws = Jwts.builder().subject(data).signWith(key).compact();
         return jws;
     }
+
+    // giải mã token truyền vào dựa trên key ( xác nhận có phải token do mình sinh ra hay không )
+    public boolean verifyToken(String token){
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
 }

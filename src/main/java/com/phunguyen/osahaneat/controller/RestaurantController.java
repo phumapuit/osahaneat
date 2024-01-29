@@ -2,6 +2,7 @@ package com.phunguyen.osahaneat.controller;
 
 import com.phunguyen.osahaneat.payload.ResponseData;
 import com.phunguyen.osahaneat.service.imp.FileServiceImp;
+import com.phunguyen.osahaneat.service.imp.RestaurantServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,10 +16,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class RestaurantController {
     @Autowired
     FileServiceImp fileServiceImp;
+    @Autowired
+    RestaurantServiceImp restaurantServiceImp;
     @PostMapping()
-    public ResponseEntity<?> createRestaurant(@RequestParam MultipartFile file){
+    public ResponseEntity<?> createRestaurant(
+            @RequestParam MultipartFile file,
+            @RequestParam String title,
+            @RequestParam String subtitle,
+            @RequestParam String description,
+            @RequestParam boolean isFreeship,
+            @RequestParam String address,
+            @RequestParam String openDate
+    ){
         ResponseData responseData = new ResponseData();
-        responseData.setData(fileServiceImp.saveFile(file));
+        boolean isSuccess = restaurantServiceImp.insertRestaurant(file,title,subtitle,description,isFreeship,address,openDate);
+        responseData.setData(isSuccess);
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+    @GetMapping("/getHomeRestaurant")
+    public ResponseEntity<?> getListRestaurant(){
+        ResponseData responseData = new ResponseData();
+        responseData.setData(restaurantServiceImp.getHomePageRestaurant());
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
     @GetMapping("/files/{filename:.+}")
